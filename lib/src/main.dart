@@ -36,6 +36,8 @@ class Candlesticks extends StatefulWidget {
 
   final Function(Candle)? onCandleSelected;
 
+  final VoidCallback? onEndLongPress;
+
   const Candlesticks({
     Key? key,
     required this.candles,
@@ -47,6 +49,7 @@ class Candlesticks extends StatefulWidget {
     this.abscisaItemTextStyle,
     this.abscisaAxisColor,
     this.onCandleSelected,
+    this.onEndLongPress,
   })  : assert(candles.length == 0 || candles.length > 1, "Please provide at least 2 candles"),
         super(key: key);
 
@@ -130,6 +133,7 @@ class _CandlesticksState extends State<Candlesticks> {
                   abscisaItemTextStyle: widget.abscisaItemTextStyle,
                   abscisaAxisColor: widget.abscisaAxisColor,
                   onCandleSelected: widget.onCandleSelected,
+                  onEndLongPress: widget.onEndLongPress,
                 );
               },
             ),

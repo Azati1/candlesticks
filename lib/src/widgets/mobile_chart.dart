@@ -45,6 +45,8 @@ class MobileChart extends StatefulWidget {
 
   final Function(Candle)? onCandleSelected;
 
+  final VoidCallback? onEndLongPress;
+
   MobileChart({
     required this.style,
     required this.candleWidth,
@@ -58,7 +60,7 @@ class MobileChart extends StatefulWidget {
     this.ordinateAxisPadding,
     this.abscisaItemTextStyle,
     this.abscisaAxisColor,
-    this.onCandleSelected,
+    this.onCandleSelected, this.onEndLongPress,
   });
 
   @override
@@ -183,6 +185,7 @@ class _MobileChartState extends State<MobileChart> {
                         padding: const EdgeInsets.only(bottom: 20),
                         child: GestureDetector(
                           onLongPressEnd: (_) {
+                            widget.onEndLongPress?.call();
                             setState(() {
                               longPressX = null;
                               longPressY = null;

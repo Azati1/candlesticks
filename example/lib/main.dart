@@ -743,6 +743,9 @@ class _MyAppState extends State<MyApp> {
               onCandleSelected: (candle) {
                 print(candle);
               },
+              onEndLongPress: () {
+                print('end');
+              },
             ),
           ),
         ),
