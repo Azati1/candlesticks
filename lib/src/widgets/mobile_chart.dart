@@ -37,6 +37,8 @@ class MobileChart extends StatefulWidget {
 
   final TextStyle? ordinateItemTextStyle;
 
+  final EdgeInsets? ordinateAxisPadding;
+
   MobileChart({
     required this.style,
     required this.candleWidth,
@@ -47,6 +49,7 @@ class MobileChart extends StatefulWidget {
     required this.onPanEnd,
     required this.mainWidnowDataContainer,
     this.ordinateItemTextStyle,
+    this.ordinateAxisPadding,
   });
 
   @override
@@ -123,9 +126,9 @@ class _MobileChartState extends State<MobileChart> {
                             child: Stack(
                               children: [
                                 Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  bottom: 0,
+                                  left: widget.ordinateAxisPadding?.left ?? 0,
+                                  top: widget.ordinateAxisPadding?.top ?? 0,
+                                  bottom: widget.ordinateAxisPadding?.right ?? 0,
                                   child: PriceColumn(
                                     ordinateMin: candlesLowPrice,
                                     ordinateMax: candlesHighPrice,

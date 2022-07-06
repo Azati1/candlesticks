@@ -728,14 +728,16 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.black,
         body: Center(
           child: SizedBox(
             height: 300,
             child: Candlesticks(
               candles: candles,
-              style: CandleSticksStyle.light(
+              style: CandleSticksStyle.dark(
                   //primaryBull:
                   ),
+              ordinateAxisPadding: EdgeInsets.only(bottom: 20, left: 20),
             ),
           ),
         ),
