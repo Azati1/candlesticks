@@ -10,6 +10,8 @@ class TimeRow extends StatefulWidget {
   final DateTime? indicatorTime;
   final int index;
   final CandleSticksStyle style;
+  final TextStyle? itemTextStyle;
+  final Color? axisColor;
 
   const TimeRow({
     Key? key,
@@ -18,6 +20,8 @@ class TimeRow extends StatefulWidget {
     required this.indicatorTime,
     required this.index,
     required this.style,
+    this.itemTextStyle,
+    this.axisColor,
   }) : super(key: key);
 
   @override
@@ -44,13 +48,13 @@ class _TimeRowState extends State<TimeRow> {
     int candleNumber = (step + 1) ~/ 2 - 10 + index * step + -1;
     DateTime? _time;
     if (candleNumber < 0)
-      _time = widget.candles[0].date.add(Duration(
-          milliseconds: dif.inMilliseconds ~/ -1 * step * candleNumber));
+      _time = widget.candles[0].date
+          .add(Duration(milliseconds: dif.inMilliseconds ~/ -1 * step * candleNumber));
     else if (candleNumber < widget.candles.length)
       _time = widget.candles[candleNumber].date;
     else {
-      _time = widget.candles[0].date.subtract(
-          Duration(milliseconds: dif.inMilliseconds ~/ step * candleNumber));
+      _time = widget.candles[0].date
+          .subtract(Duration(milliseconds: dif.inMilliseconds ~/ step * candleNumber));
     }
     return _time;
   }
@@ -64,10 +68,11 @@ class _TimeRowState extends State<TimeRow> {
   Text _monthDayText(DateTime _time, Color color) {
     return Text(
       numberFormat(_time.month) + "/" + numberFormat(_time.day),
-      style: TextStyle(
-        color: color,
-        fontSize: 12,
-      ),
+      style: widget.itemTextStyle ??
+          TextStyle(
+            color: color,
+            fontSize: 12,
+          ),
     );
   }
 
@@ -75,10 +80,11 @@ class _TimeRowState extends State<TimeRow> {
   Text _hourMinuteText(DateTime _time, Color color) {
     return Text(
       numberFormat(_time.hour) + ":" + numberFormat(_time.minute),
-      style: TextStyle(
-        color: color,
-        fontSize: 12,
-      ),
+      style: widget.itemTextStyle ??
+          TextStyle(
+            color: color,
+            fontSize: 12,
+          ),
     );
   }
 
@@ -88,8 +94,7 @@ class _TimeRowState extends State<TimeRow> {
 
   @override
   void didUpdateWidget(TimeRow oldWidget) {
-    if (oldWidget.index != widget.index ||
-        oldWidget.candleWidth != widget.candleWidth)
+    if (oldWidget.index != widget.index || oldWidget.candleWidth != widget.candleWidth)
       _scrollController.jumpTo((widget.index + 10) * widget.candleWidth);
     super.didUpdateWidget(oldWidget);
   }
@@ -97,35 +102,58 @@ class _TimeRowState extends State<TimeRow> {
   @override
   Widget build(BuildContext context) {
     int step = _stepCalculator();
-    final dif =
-        widget.candles[0].date.difference(widget.candles[1].date) * step;
-    return Stack(
+    final dif = widget.candles[0].date.difference(widget.candles[1].date) * step;
+    return SizedBox(
+      height: 8.5,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: widget.axisColor ?? Colors.transparent, width: 1.5),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: math.max(widget.candles.length, 1000),
+              scrollDirection: Axis.horizontal,
+              itemExtent: step * widget.candleWidth,
+              controller: _scrollController,
+              reverse: true,
+              itemBuilder: (context, index) {
+                DateTime _time = _timeCalculator(step, index, dif);
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: 0.05,
+                        color: widget.style.borderColor,
+                      ),
+                    ),
+                    _w(dif, _time),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _w(Duration dif, DateTime time) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: math.max(widget.candles.length, 1000),
-          scrollDirection: Axis.horizontal,
-          itemExtent: step * widget.candleWidth,
-          controller: _scrollController,
-          reverse: true,
-          itemBuilder: (context, index) {
-            DateTime _time = _timeCalculator(step, index, dif);
-            return Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Container(
-                    width: 0.05,
-                    color: widget.style.borderColor,
-                  ),
-                ),
-                dif.compareTo(Duration(days: 1)) > 0
-                    ? _monthDayText(_time, widget.style.primaryTextColor)
-                    : _hourMinuteText(_time, widget.style.primaryTextColor),
-              ],
-            );
-          },
-        ),
+        Container(height: 8, width: 2, color: Colors.blue),
+        const SizedBox(height: 5),
+        dif.compareTo(Duration(days: 1)) > 0
+            ? _monthDayText(time, widget.style.primaryTextColor)
+            : _hourMinuteText(time, widget.style.primaryTextColor),
       ],
     );
   }

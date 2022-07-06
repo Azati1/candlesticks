@@ -39,6 +39,10 @@ class MobileChart extends StatefulWidget {
 
   final EdgeInsets? ordinateAxisPadding;
 
+  final TextStyle? abscisaItemTextStyle;
+
+  final Color? abscisaAxisColor;
+
   MobileChart({
     required this.style,
     required this.candleWidth,
@@ -50,6 +54,8 @@ class MobileChart extends StatefulWidget {
     required this.mainWidnowDataContainer,
     this.ordinateItemTextStyle,
     this.ordinateAxisPadding,
+    this.abscisaItemTextStyle,
+    this.abscisaAxisColor,
   });
 
   @override
@@ -113,13 +119,6 @@ class _MobileChartState extends State<MobileChart> {
                   color: widget.style.background,
                   child: Stack(
                     children: [
-                      TimeRow(
-                        style: widget.style,
-                        candles: widget.candles,
-                        candleWidth: widget.candleWidth,
-                        indicatorTime: currentCandle?.date,
-                        index: widget.index,
-                      ),
                       Column(
                         children: [
                           Expanded(
@@ -135,22 +134,31 @@ class _MobileChartState extends State<MobileChart> {
                                     textStyle: widget.ordinateItemTextStyle,
                                   ),
                                 ),
-                                RepaintBoundary(
-                                  child: CandleStickWidget(
-                                    candles: widget.candles,
-                                    candleWidth: widget.candleWidth,
-                                    index: widget.index,
-                                    high: high,
-                                    low: low,
-                                    bearColor: widget.style.primaryBear,
-                                    bullColor: widget.style.primaryBull,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 30),
+                                  child: RepaintBoundary(
+                                    child: CandleStickWidget(
+                                      candles: widget.candles,
+                                      candleWidth: widget.candleWidth,
+                                      index: widget.index,
+                                      high: high,
+                                      low: low,
+                                      bearColor: widget.style.primaryBear,
+                                      bullColor: widget.style.primaryBull,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: DATE_BAR_HEIGHT,
+                          TimeRow(
+                            style: widget.style,
+                            candles: widget.candles,
+                            candleWidth: widget.candleWidth,
+                            indicatorTime: currentCandle?.date,
+                            index: widget.index,
+                            itemTextStyle: widget.abscisaItemTextStyle,
+                            axisColor: widget.abscisaAxisColor,
                           ),
                         ],
                       ),

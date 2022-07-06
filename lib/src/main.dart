@@ -30,6 +30,10 @@ class Candlesticks extends StatefulWidget {
 
   final EdgeInsets? ordinateAxisPadding;
 
+  final TextStyle? abscisaItemTextStyle;
+
+  final Color? abscisaAxisColor;
+
   const Candlesticks({
     Key? key,
     required this.candles,
@@ -38,6 +42,8 @@ class Candlesticks extends StatefulWidget {
     this.style,
     this.ordinateItemTextStyle,
     this.ordinateAxisPadding,
+    this.abscisaItemTextStyle,
+    this.abscisaAxisColor,
   })  : assert(candles.length == 0 || candles.length > 1, "Please provide at least 2 candles"),
         super(key: key);
 
@@ -118,6 +124,8 @@ class _CandlesticksState extends State<Candlesticks> {
                   index: index,
                   ordinateItemTextStyle: widget.ordinateItemTextStyle,
                   ordinateAxisPadding: widget.ordinateAxisPadding,
+                  abscisaItemTextStyle: widget.abscisaItemTextStyle,
+                  abscisaAxisColor: widget.abscisaAxisColor,
                 );
               },
             ),

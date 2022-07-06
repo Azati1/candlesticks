@@ -738,6 +738,8 @@ class _MyAppState extends State<MyApp> {
                   //primaryBull:
                   ),
               ordinateAxisPadding: EdgeInsets.only(bottom: 20, left: 20),
+              abscisaAxisColor: Colors.blue,
+              abscisaItemTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
             ),
           ),
         ),
