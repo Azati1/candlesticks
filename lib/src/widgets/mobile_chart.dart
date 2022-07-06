@@ -209,6 +209,16 @@ class _MobileChartState extends State<MobileChart> {
                               longPressX = details.localPosition.dx;
                               longPressY = details.localPosition.dy;
                             });
+
+                            final currentCandle = longPressX == null
+                                ? null
+                                : widget.candles[min(
+                                max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
+                                widget.candles.length - 1)];
+
+                            if (currentCandle != null) {
+                              widget.onCandleSelected?.call(currentCandle);
+                            }
                           },
                         ),
                       ),
