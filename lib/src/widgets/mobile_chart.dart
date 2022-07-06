@@ -128,7 +128,7 @@ class _MobileChartState extends State<MobileChart> {
                                 Positioned(
                                   left: widget.ordinateAxisPadding?.left ?? 0,
                                   top: widget.ordinateAxisPadding?.top ?? 0,
-                                  bottom: widget.ordinateAxisPadding?.right ?? 0,
+                                  bottom: widget.ordinateAxisPadding?.bottom ?? 0,
                                   child: PriceColumn(
                                     ordinateMin: candlesLowPrice,
                                     ordinateMax: candlesHighPrice,
