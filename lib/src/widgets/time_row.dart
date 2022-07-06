@@ -104,7 +104,7 @@ class _TimeRowState extends State<TimeRow> {
     int step = _stepCalculator();
     final dif = widget.candles[0].date.difference(widget.candles[1].date) * step;
     return SizedBox(
-      height: 8.5,
+      height: 29.5,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
