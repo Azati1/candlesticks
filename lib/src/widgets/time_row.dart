@@ -7,7 +7,6 @@ import 'dart:math' as math;
 class TimeRow extends StatefulWidget {
   final List<Candle> candles;
   final double candleWidth;
-  final double? indicatorX;
   final DateTime? indicatorTime;
   final int index;
   final CandleSticksStyle style;
@@ -16,7 +15,6 @@ class TimeRow extends StatefulWidget {
     Key? key,
     required this.candles,
     required this.candleWidth,
-    this.indicatorX,
     required this.indicatorTime,
     required this.index,
     required this.style,
@@ -101,57 +99,34 @@ class _TimeRowState extends State<TimeRow> {
     int step = _stepCalculator();
     final dif =
         widget.candles[0].date.difference(widget.candles[1].date) * step;
-    return Padding(
-      padding: const EdgeInsets.only(right: PRICE_BAR_WIDTH + 1.0),
-      child: Stack(
-        children: [
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: math.max(widget.candles.length, 1000),
-            scrollDirection: Axis.horizontal,
-            itemExtent: step * widget.candleWidth,
-            controller: _scrollController,
-            reverse: true,
-            itemBuilder: (context, index) {
-              DateTime _time = _timeCalculator(step, index, dif);
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Container(
-                      width: 0.05,
-                      color: widget.style.borderColor,
-                    ),
-                  ),
-                  dif.compareTo(Duration(days: 1)) > 0
-                      ? _monthDayText(_time, widget.style.primaryTextColor)
-                      : _hourMinuteText(_time, widget.style.primaryTextColor),
-                ],
-              );
-            },
-          ),
-          widget.indicatorX == null
-              ? Container()
-              : Positioned(
-                  bottom: 0,
-                  left: math.max(widget.indicatorX! - 55, 0),
+    return Stack(
+      children: [
+        ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: math.max(widget.candles.length, 1000),
+          scrollDirection: Axis.horizontal,
+          itemExtent: step * widget.candleWidth,
+          controller: _scrollController,
+          reverse: true,
+          itemBuilder: (context, index) {
+            DateTime _time = _timeCalculator(step, index, dif);
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
                   child: Container(
-                    color: widget.style.hoverIndicatorBackgroundColor,
-                    child: Center(
-                      child: Text(
-                        dateFormatter(widget.indicatorTime!),
-                        style: TextStyle(
-                          color: widget.style.secondaryTextColor,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    width: 110,
-                    height: 20,
+                    width: 0.05,
+                    color: widget.style.borderColor,
                   ),
                 ),
-        ],
-      ),
+                dif.compareTo(Duration(days: 1)) > 0
+                    ? _monthDayText(_time, widget.style.primaryTextColor)
+                    : _hourMinuteText(_time, widget.style.primaryTextColor),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }

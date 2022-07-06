@@ -23,8 +23,6 @@ class CandleSticksStyle {
 
   final Color loadingColor;
 
-  final Color toolBarColor;
-
   CandleSticksStyle({
     required this.borderColor,
     required this.background,
@@ -37,7 +35,6 @@ class CandleSticksStyle {
     required this.secondaryTextColor,
     required this.mobileCandleHoverColor,
     required this.loadingColor,
-    required this.toolBarColor,
   });
 
   factory CandleSticksStyle.dark({
@@ -68,7 +65,6 @@ class CandleSticksStyle {
       mobileCandleHoverColor:
           mobileCandleHoverColor ?? Color(0xFFF0B90A).withOpacity(0.2),
       loadingColor: loadingColor ?? Color(0xFFF0B90A),
-      toolBarColor: toolBarColor ?? Color(0xFF191B20),
     );
   }
 
@@ -100,7 +96,6 @@ class CandleSticksStyle {
       mobileCandleHoverColor:
           mobileCandleHoverColor ?? Color(0xFFF0B90A).withOpacity(0.2),
       loadingColor: loadingColor ?? Color(0xFFF0B90A),
-      toolBarColor: toolBarColor ?? Color(0xFFFAFAFA),
     );
   }
 }
