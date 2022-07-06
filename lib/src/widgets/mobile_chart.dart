@@ -165,8 +165,8 @@ class _MobileChartState extends State<MobileChart> {
                       longPressX != null
                           ? Positioned(
                               child: Container(
-                                width: widget.candleWidth,
-                                height: maxHeight,
+                                width: 1,
+                                height: maxHeight - 8,
                                 color: widget.style.mobileCandleHoverColor,
                               ),
                               right: (maxWidth - longPressX!),
