@@ -149,7 +149,7 @@ class _TimeRowState extends State<TimeRow> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(height: 8, width: 2, color: Colors.blue),
+        Container(height: 8, width: 2, color: widget.axisColor),
         const SizedBox(height: 5),
         dif.compareTo(Duration(days: 1)) > 0
             ? _monthDayText(time, widget.style.primaryTextColor)
