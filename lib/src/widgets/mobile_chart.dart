@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:candlesticks/candlesticks.dart';
 import 'package:candlesticks/src/constant/view_constants.dart';
 import 'package:candlesticks/src/models/main_window_indicator.dart';
+import 'package:candlesticks/src/models/tooltip_side.dart';
 import 'package:candlesticks/src/widgets/candle_stick_widget.dart';
 import 'package:candlesticks/src/widgets/price_column.dart';
 import 'package:candlesticks/src/widgets/time_row.dart';
@@ -47,6 +48,8 @@ class MobileChart extends StatefulWidget {
 
   final VoidCallback? onEndLongPress;
 
+  final Widget? tooltip;
+
   MobileChart({
     required this.style,
     required this.candleWidth,
@@ -60,7 +63,9 @@ class MobileChart extends StatefulWidget {
     this.ordinateAxisPadding,
     this.abscisaItemTextStyle,
     this.abscisaAxisColor,
-    this.onCandleSelected, this.onEndLongPress,
+    this.onCandleSelected,
+    this.onEndLongPress,
+    this.tooltip,
   });
 
   @override
@@ -70,7 +75,7 @@ class MobileChart extends StatefulWidget {
 class _MobileChartState extends State<MobileChart> {
   double? longPressX;
   double? longPressY;
-  bool showIndicatorNames = false;
+  TooltipSide _tooltipSide = TooltipSide.right;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +124,10 @@ class _MobileChartState extends State<MobileChart> {
                     : widget.candles[min(
                         max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
                         widget.candles.length - 1)];
+
+                if (longPressX != null) {
+                  _tooltipSide = longPressX! > maxWidth / 2 ? TooltipSide.right : TooltipSide.left;
+                }
 
                 return Container(
                   color: widget.style.background,
@@ -196,8 +205,11 @@ class _MobileChartState extends State<MobileChart> {
                             final currentCandle = longPressX == null
                                 ? null
                                 : widget.candles[min(
-                                max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
-                                widget.candles.length - 1)];
+                                    max(
+                                        (maxWidth - longPressX!) ~/ widget.candleWidth +
+                                            widget.index,
+                                        0),
+                                    widget.candles.length - 1)];
 
                             if (currentCandle != null) {
                               widget.onCandleSelected?.call(currentCandle);
@@ -213,8 +225,11 @@ class _MobileChartState extends State<MobileChart> {
                             final currentCandle = longPressX == null
                                 ? null
                                 : widget.candles[min(
-                                max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
-                                widget.candles.length - 1)];
+                                    max(
+                                        (maxWidth - longPressX!) ~/ widget.candleWidth +
+                                            widget.index,
+                                        0),
+                                    widget.candles.length - 1)];
 
                             if (currentCandle != null) {
                               widget.onCandleSelected?.call(currentCandle);
@@ -222,6 +237,13 @@ class _MobileChartState extends State<MobileChart> {
                           },
                         ),
                       ),
+                      if (widget.tooltip != null && longPressX != null)
+                        Align(
+                          alignment: TooltipSide.right == _tooltipSide
+                              ? Alignment.topLeft
+                              : Alignment.topRight,
+                          child: widget.tooltip,
+                        ),
                     ],
                   ),
                 );
