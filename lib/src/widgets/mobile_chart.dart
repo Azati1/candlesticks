@@ -43,6 +43,8 @@ class MobileChart extends StatefulWidget {
 
   final Color? abscisaAxisColor;
 
+  final Function(Candle)? onCandleSelected;
+
   MobileChart({
     required this.style,
     required this.candleWidth,
@@ -56,6 +58,7 @@ class MobileChart extends StatefulWidget {
     this.ordinateAxisPadding,
     this.abscisaItemTextStyle,
     this.abscisaAxisColor,
+    this.onCandleSelected,
   });
 
   @override
@@ -114,6 +117,10 @@ class _MobileChartState extends State<MobileChart> {
                     : widget.candles[min(
                         max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
                         widget.candles.length - 1)];
+
+                if (currentCandle != null) {
+                  widget.onCandleSelected?.call(currentCandle);
+                }
 
                 return Container(
                   color: widget.style.background,
@@ -180,12 +187,6 @@ class _MobileChartState extends State<MobileChart> {
                               longPressX = null;
                               longPressY = null;
                             });
-                          },
-                          onScaleEnd: (_) {
-                            widget.onPanEnd();
-                          },
-                          onScaleStart: (details) {
-                            widget.onPanDown(details.localFocalPoint.dx);
                           },
                           onLongPressStart: (LongPressStartDetails details) {
                             setState(() {

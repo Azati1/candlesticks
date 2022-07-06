@@ -740,6 +740,9 @@ class _MyAppState extends State<MyApp> {
               ordinateAxisPadding: EdgeInsets.only(bottom: 20, left: 20),
               abscisaAxisColor: Colors.blue,
               abscisaItemTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
+              onCandleSelected: (candle) {
+                print(candle);
+              },
             ),
           ),
         ),
