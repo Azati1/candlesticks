@@ -173,15 +173,13 @@ class _MobileChartState extends State<MobileChart> {
                         ],
                       ),
                       longPressX != null
-                          ? Align(
-                              alignment: _tooltipSide == TooltipSide.right
-                                  ? Alignment.topRight
-                                  : Alignment.topLeft,
+                          ? Positioned(
                               child: Container(
                                 width: 1,
                                 height: maxHeight - 8,
                                 color: widget.style.mobileCandleHoverColor,
-                              )
+                              ),
+                              right: (maxWidth - longPressX!),
                             )
                           : Container(),
                       if (widget.tooltipBuilder != null && longPressX != null)
