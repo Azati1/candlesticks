@@ -112,10 +112,10 @@ class _TimeRowState extends State<TimeRow> {
 
     for (int i = 0; i < months.length; i++) {
       final month = months[i];
-      if (i == 0) continue;
+      if (i < 2) continue;
       final previousMonth = months[i - 1];
       if (previousMonth != month) {
-        indexes.add(i - 1);
+        indexes.add(i - 2);
       }
     }
 
