@@ -108,7 +108,6 @@ class _TimeRowState extends State<TimeRow> {
     final months = widget.candles.sublist(0, candlesOnScreen).map((e) => e.date.month).toList();
 
     final indexes = <int>[];
-    print(months);
 
     for (int i = 0; i < months.length; i++) {
       final month = months[i];
@@ -118,8 +117,6 @@ class _TimeRowState extends State<TimeRow> {
         indexes.add(i - 2);
       }
     }
-
-    print(indexes);
 
     return indexes;
   }
