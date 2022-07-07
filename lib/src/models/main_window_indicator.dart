@@ -1,7 +1,4 @@
-import 'package:candlesticks/src/models/indicator.dart';
-import 'dart:math' as math;
 import 'candle.dart';
-import 'package:flutter/material.dart';
 
 class MainWidnowDataContainer {
   List<double> highs = [];

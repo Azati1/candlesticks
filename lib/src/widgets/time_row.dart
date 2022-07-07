@@ -1,9 +1,7 @@
-import 'package:candlesticks/src/constant/view_constants.dart';
 import 'package:candlesticks/src/models/candle.dart';
 import 'package:candlesticks/src/models/candle_sticks_style.dart';
 import 'package:candlesticks/src/widgets/abscissa_notation_item.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class TimeRow extends StatefulWidget {
   final List<Candle> candles;
@@ -44,24 +42,6 @@ class _TimeRowState extends State<TimeRow> {
       return 9;
   }
 
-  final List<int> _months = [];
-
-  /// Calculates [DateTime] of a given candle index
-  DateTime _timeCalculator(int step, int index, Duration dif) {
-    int candleNumber = (step + 1) ~/ 2 - 10 + index * step + -1;
-    DateTime? _time;
-    if (candleNumber < 0)
-      _time = widget.candles[0].date
-          .add(Duration(milliseconds: dif.inMilliseconds ~/ -1 * step * candleNumber));
-    else if (candleNumber < widget.candles.length)
-      _time = widget.candles[candleNumber].date;
-    else {
-      _time = widget.candles[0].date
-          .subtract(Duration(milliseconds: dif.inMilliseconds ~/ step * candleNumber));
-    }
-    return _time;
-  }
-
   @override
   void didUpdateWidget(TimeRow oldWidget) {
     if (oldWidget.index != widget.index || oldWidget.candleWidth != widget.candleWidth)
@@ -73,7 +53,7 @@ class _TimeRowState extends State<TimeRow> {
   Widget build(BuildContext context) {
     int step = _stepCalculator();
     final dif = widget.candles[0].date.difference(widget.candles[1].date) * step;
-    final visibleIndexes = _visibleIndexes(dif, step);
+    final visibleIndexes = _visibleIndexes();
     return SizedBox(
       height: 29.5,
       child: Column(
@@ -87,37 +67,36 @@ class _TimeRowState extends State<TimeRow> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: math.max(widget.candles.length, 1000),
-              scrollDirection: Axis.horizontal,
-              itemExtent: step * widget.candleWidth,
-              controller: _scrollController,
-              reverse: true,
-              itemBuilder: (context, index) {
-                DateTime _time = _timeCalculator(step, index, dif);
+            child: Stack(
+              children: List.generate(widget.candles.sublist(0, candlesOnScreen).length, (index) {
                 if (visibleIndexes.contains(index)) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: Container(
+                  return Positioned(
+                    right: index * widget.candleWidth,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
                           width: 0.05,
                           color: widget.style.borderColor,
                         ),
-                      ),
-                      AbscissaNotationItem(
-                        difference: dif,
-                        time: _time,
-                        textColor: widget.style.primaryTextColor,
-                        axisColor: widget.axisColor,
-                        itemTextStyle: widget.itemTextStyle,
-                      ),
-                    ],
+                        AbscissaNotationItem(
+                          difference: dif,
+                          time: widget.candles[index].date,
+                          textColor: widget.style.primaryTextColor,
+                          axisColor: widget.axisColor,
+                          itemTextStyle: widget.itemTextStyle,
+                        ),
+                      ],
+                    ),
                   );
                 }
-                return SizedBox();
-              },
+                return Positioned(
+                  right: index * widget.candleWidth,
+                  child: SizedBox(
+                    width: widget.candleWidth,
+                  ),
+                );
+              }).reversed.toList(),
             ),
           ),
         ],
@@ -125,25 +104,27 @@ class _TimeRowState extends State<TimeRow> {
     );
   }
 
-  List<int> _visibleIndexes(Duration dif, int step) {
-    final dates = List.generate(
-      math.max(widget.candles.length, 1000),
-      (index) => _timeCalculator(step, index, dif).month,
-    );
+  List<int> _visibleIndexes() {
+    final months = widget.candles.sublist(0, candlesOnScreen).map((e) => e.date.month).toList();
 
     final indexes = <int>[];
+    print(months);
 
-    for (int i = 0; i < dates.length; i++) {
-      final month = dates[i];
+    for (int i = 0; i < months.length; i++) {
+      final month = months[i];
       if (i == 0) continue;
-      final previousMonth = dates[i - 1];
+      final previousMonth = months[i - 1];
       if (previousMonth != month) {
-        indexes.add(i);
+        indexes.add(i - 1);
       }
     }
 
     print(indexes);
 
     return indexes;
+  }
+
+  int get candlesOnScreen {
+    return MediaQuery.of(context).size.width ~/ widget.candleWidth;
   }
 }

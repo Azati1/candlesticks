@@ -30,33 +30,9 @@ class AbscissaNotationItem extends StatelessWidget {
   }
 
   /// Day/month text widget
-  Text _monthDayText(DateTime _time, Color color) {
-    return Text(
-      numberFormat(_time.month) + "/" + numberFormat(_time.day),
-      style: itemTextStyle ??
-          TextStyle(
-            color: color,
-            fontSize: 12,
-          ),
-    );
-  }
-
-  /// Day/month text widget
   Text _monthText(DateTime _time, Color color) {
     return Text(
-      DateFormat('MMM').format(_time),
-      style: itemTextStyle ??
-          TextStyle(
-            color: color,
-            fontSize: 12,
-          ),
-    );
-  }
-
-  /// Hour/minute text widget
-  Text _hourMinuteText(DateTime _time, Color color) {
-    return Text(
-      numberFormat(_time.hour) + ":" + numberFormat(_time.minute),
+      DateFormat('MMMM').format(_time),
       style: itemTextStyle ??
           TextStyle(
             color: color,
