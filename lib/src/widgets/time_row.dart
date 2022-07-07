@@ -44,6 +44,8 @@ class _TimeRowState extends State<TimeRow> {
       return 9;
   }
 
+  final List<int> _months = [];
+
   /// Calculates [DateTime] of a given candle index
   DateTime _timeCalculator(int step, int index, Duration dif) {
     int candleNumber = (step + 1) ~/ 2 - 10 + index * step + -1;
@@ -71,6 +73,7 @@ class _TimeRowState extends State<TimeRow> {
   Widget build(BuildContext context) {
     int step = _stepCalculator();
     final dif = widget.candles[0].date.difference(widget.candles[1].date) * step;
+    final visibleIndexes = _visibleIndexes(dif, step);
     return SizedBox(
       height: 29.5,
       child: Column(
@@ -93,29 +96,54 @@ class _TimeRowState extends State<TimeRow> {
               reverse: true,
               itemBuilder: (context, index) {
                 DateTime _time = _timeCalculator(step, index, dif);
-                return Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: 0.05,
-                        color: widget.style.borderColor,
+                if (visibleIndexes.contains(index)) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: 0.05,
+                          color: widget.style.borderColor,
+                        ),
                       ),
-                    ),
-                    AbscissaNotationItem(
-                      difference: dif,
-                      time: _time,
-                      textColor: widget.style.primaryTextColor,
-                      axisColor: widget.axisColor,
-                      itemTextStyle: widget.itemTextStyle,
-                    ),
-                  ],
-                );
+                      AbscissaNotationItem(
+                        difference: dif,
+                        time: _time,
+                        textColor: widget.style.primaryTextColor,
+                        axisColor: widget.axisColor,
+                        itemTextStyle: widget.itemTextStyle,
+                      ),
+                    ],
+                  );
+                }
+                return SizedBox();
               },
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<int> _visibleIndexes(Duration dif, int step) {
+    final dates = List.generate(
+      math.max(widget.candles.length, 1000),
+      (index) => _timeCalculator(step, index, dif).month,
+    );
+
+    final indexes = <int>[];
+
+    for (int i = 0; i < dates.length; i++) {
+      final month = dates[i];
+      if (i == 0) continue;
+      final previousMonth = dates[i - 1];
+      if (previousMonth != month) {
+        indexes.add(i);
+      }
+    }
+
+    print(indexes);
+
+    return indexes;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AbscissaNotationItem extends StatelessWidget {
   const AbscissaNotationItem({
@@ -23,9 +24,7 @@ class AbscissaNotationItem extends StatelessWidget {
       children: [
         Container(height: 8, width: 2, color: axisColor),
         const SizedBox(height: 5),
-        difference.compareTo(Duration(days: 1)) > 0
-            ? _monthDayText(time, textColor)
-            : _hourMinuteText(time, textColor),
+        _monthText(time, textColor),
       ],
     );
   }
@@ -34,6 +33,18 @@ class AbscissaNotationItem extends StatelessWidget {
   Text _monthDayText(DateTime _time, Color color) {
     return Text(
       numberFormat(_time.month) + "/" + numberFormat(_time.day),
+      style: itemTextStyle ??
+          TextStyle(
+            color: color,
+            fontSize: 12,
+          ),
+    );
+  }
+
+  /// Day/month text widget
+  Text _monthText(DateTime _time, Color color) {
+    return Text(
+      DateFormat('MMM').format(_time),
       style: itemTextStyle ??
           TextStyle(
             color: color,
