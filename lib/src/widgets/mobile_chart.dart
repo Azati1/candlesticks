@@ -224,8 +224,10 @@ class _MobileChartState extends State<MobileChart> {
                           alignment: TooltipSide.right == _tooltipSide
                               ? Alignment.topLeft
                               : Alignment.topRight,
-                          child: widget.tooltipBuilder!.call(
-                            _currentCandle(maxWidth)!,
+                          child: IgnorePointer(
+                            child: widget.tooltipBuilder!.call(
+                              _currentCandle(maxWidth)!,
+                            ),
                           ),
                         ),
                     ],
