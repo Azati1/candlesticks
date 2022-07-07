@@ -182,54 +182,56 @@ class _MobileChartState extends State<MobileChart> {
                               right: (maxWidth - longPressX!),
                             )
                           : Container(),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: GestureDetector(
-                          onLongPressEnd: (_) {
-                            widget.onEndLongPress?.call();
-                            setState(() {
-                              longPressX = null;
-                              longPressY = null;
-                            });
-                          },
-                          onLongPressStart: (LongPressStartDetails details) {
-                            setState(() {
-                              longPressX = details.localPosition.dx;
-                              longPressY = details.localPosition.dy;
-                            });
-
-                            final currentCandle = _currentCandle(maxWidth);
-
-                            if (currentCandle != null) {
-                              widget.onCandleSelected?.call(currentCandle);
-                            }
-                          },
-                          behavior: HitTestBehavior.translucent,
-                          onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
-                            setState(() {
-                              longPressX = details.localPosition.dx;
-                              longPressY = details.localPosition.dy;
-                            });
-
-                            final currentCandle = _currentCandle(maxWidth);
-
-                            if (currentCandle != null) {
-                              widget.onCandleSelected?.call(currentCandle);
-                            }
-                          },
-                        ),
-                      ),
                       if (widget.tooltipBuilder != null && longPressX != null)
-                        Align(
-                          alignment: TooltipSide.right == _tooltipSide
-                              ? Alignment.topLeft
-                              : Alignment.topRight,
+                        Positioned(
+                          right: TooltipSide.right == _tooltipSide ? 0 : null,
+                          left: TooltipSide.left == _tooltipSide ? 0 : null,
                           child: IgnorePointer(
                             child: widget.tooltipBuilder!.call(
                               _currentCandle(maxWidth)!,
                             ),
                           ),
                         ),
+                      GestureDetector(
+                        onLongPressEnd: (_) {
+                          print('onLongPressEnd');
+                          widget.onEndLongPress?.call();
+                          setState(() {
+                            longPressX = null;
+                            longPressY = null;
+                          });
+                        },
+                        onLongPressStart: (LongPressStartDetails details) {
+                          setState(() {
+                            longPressX = details.localPosition.dx;
+                            longPressY = details.localPosition.dy;
+                          });
+
+                          final currentCandle = _currentCandle(maxWidth);
+
+                          if (currentCandle != null) {
+                            widget.onCandleSelected?.call(currentCandle);
+                          }
+                        },
+                        behavior: HitTestBehavior.translucent,
+                        onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
+                          setState(() {
+                            longPressX = details.localPosition.dx;
+                            longPressY = details.localPosition.dy;
+                          });
+
+                          print('onLongPressMoveUpdate');
+
+                          final currentCandle = longPressX == null
+                              ? null
+                              : widget.candles[min(max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
+                              widget.candles.length - 1)];
+
+                          if (currentCandle != null) {
+                            widget.onCandleSelected?.call(currentCandle);
+                          }
+                        },
+                      ),
                     ],
                   ),
                 );
