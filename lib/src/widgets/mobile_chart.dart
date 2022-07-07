@@ -173,13 +173,15 @@ class _MobileChartState extends State<MobileChart> {
                         ],
                       ),
                       longPressX != null
-                          ? Positioned(
+                          ? Align(
+                              alignment: _tooltipSide == TooltipSide.right
+                                  ? Alignment.topRight
+                                  : Alignment.topLeft,
                               child: Container(
                                 width: 1,
                                 height: maxHeight - 8,
                                 color: widget.style.mobileCandleHoverColor,
-                              ),
-                              right: (maxWidth - longPressX!),
+                              )
                             )
                           : Container(),
                       if (widget.tooltipBuilder != null && longPressX != null)
@@ -194,7 +196,6 @@ class _MobileChartState extends State<MobileChart> {
                         ),
                       GestureDetector(
                         onLongPressEnd: (_) {
-                          print('onLongPressEnd');
                           widget.onEndLongPress?.call();
                           setState(() {
                             longPressX = null;
@@ -220,12 +221,7 @@ class _MobileChartState extends State<MobileChart> {
                             longPressY = details.localPosition.dy;
                           });
 
-                          print('onLongPressMoveUpdate');
-
-                          final currentCandle = longPressX == null
-                              ? null
-                              : widget.candles[min(max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
-                              widget.candles.length - 1)];
+                          final currentCandle = _currentCandle(maxWidth);
 
                           if (currentCandle != null) {
                             widget.onCandleSelected?.call(currentCandle);
