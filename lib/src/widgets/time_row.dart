@@ -1,6 +1,7 @@
 import 'package:candlesticks/src/constant/view_constants.dart';
 import 'package:candlesticks/src/models/candle.dart';
 import 'package:candlesticks/src/models/candle_sticks_style.dart';
+import 'package:candlesticks/src/widgets/abscissa_notation_item.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -59,39 +60,6 @@ class _TimeRowState extends State<TimeRow> {
     return _time;
   }
 
-  /// Fomats number as 2 digit integer
-  String numberFormat(int value) {
-    return "${value < 10 ? 0 : ""}$value";
-  }
-
-  /// Day/month text widget
-  Text _monthDayText(DateTime _time, Color color) {
-    return Text(
-      numberFormat(_time.month) + "/" + numberFormat(_time.day),
-      style: widget.itemTextStyle ??
-          TextStyle(
-            color: color,
-            fontSize: 12,
-          ),
-    );
-  }
-
-  /// Hour/minute text widget
-  Text _hourMinuteText(DateTime _time, Color color) {
-    return Text(
-      numberFormat(_time.hour) + ":" + numberFormat(_time.minute),
-      style: widget.itemTextStyle ??
-          TextStyle(
-            color: color,
-            fontSize: 12,
-          ),
-    );
-  }
-
-  String dateFormatter(DateTime date) {
-    return "${date.year}-${numberFormat(date.month)}-${numberFormat(date.day)} ${numberFormat(date.hour)}:${numberFormat(date.minute)}";
-  }
-
   @override
   void didUpdateWidget(TimeRow oldWidget) {
     if (oldWidget.index != widget.index || oldWidget.candleWidth != widget.candleWidth)
@@ -134,7 +102,13 @@ class _TimeRowState extends State<TimeRow> {
                         color: widget.style.borderColor,
                       ),
                     ),
-                    _w(dif, _time),
+                    AbscissaNotationItem(
+                      difference: dif,
+                      time: _time,
+                      textColor: widget.style.primaryTextColor,
+                      axisColor: widget.axisColor,
+                      itemTextStyle: widget.itemTextStyle,
+                    ),
                   ],
                 );
               },
@@ -142,19 +116,6 @@ class _TimeRowState extends State<TimeRow> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _w(Duration dif, DateTime time) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(height: 8, width: 2, color: widget.axisColor),
-        const SizedBox(height: 5),
-        dif.compareTo(Duration(days: 1)) > 0
-            ? _monthDayText(time, widget.style.primaryTextColor)
-            : _hourMinuteText(time, widget.style.primaryTextColor),
-      ],
     );
   }
 }

@@ -40,13 +40,9 @@ class MobileChart extends StatefulWidget {
 
   final EdgeInsets? ordinateAxisPadding;
 
-  final TextStyle? abscisaItemTextStyle;
+  final TextStyle? abscissaItemTextStyle;
 
-  final Color? abscisaAxisColor;
-
-  final Function(Candle)? onCandleSelected;
-
-  final VoidCallback? onEndLongPress;
+  final Color? abscissaAxisColor;
 
   final Widget Function(Candle)? tooltipBuilder;
 
@@ -61,10 +57,8 @@ class MobileChart extends StatefulWidget {
     required this.mainWidnowDataContainer,
     this.ordinateItemTextStyle,
     this.ordinateAxisPadding,
-    this.abscisaItemTextStyle,
-    this.abscisaAxisColor,
-    this.onCandleSelected,
-    this.onEndLongPress,
+    this.abscissaItemTextStyle,
+    this.abscissaAxisColor,
     this.tooltipBuilder,
   });
 
@@ -167,8 +161,8 @@ class _MobileChartState extends State<MobileChart> {
                             candleWidth: widget.candleWidth,
                             indicatorTime: currentCandle?.date,
                             index: widget.index,
-                            itemTextStyle: widget.abscisaItemTextStyle,
-                            axisColor: widget.abscisaAxisColor,
+                            itemTextStyle: widget.abscissaItemTextStyle,
+                            axisColor: widget.abscissaAxisColor,
                           ),
                         ],
                       ),
@@ -195,7 +189,6 @@ class _MobileChartState extends State<MobileChart> {
                         ),
                       GestureDetector(
                         onLongPressEnd: (_) {
-                          widget.onEndLongPress?.call();
                           setState(() {
                             longPressX = null;
                             longPressY = null;
@@ -206,12 +199,6 @@ class _MobileChartState extends State<MobileChart> {
                             longPressX = details.localPosition.dx;
                             longPressY = details.localPosition.dy;
                           });
-
-                          final currentCandle = _currentCandle(maxWidth);
-
-                          if (currentCandle != null) {
-                            widget.onCandleSelected?.call(currentCandle);
-                          }
                         },
                         behavior: HitTestBehavior.translucent,
                         onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
@@ -219,12 +206,6 @@ class _MobileChartState extends State<MobileChart> {
                             longPressX = details.localPosition.dx;
                             longPressY = details.localPosition.dy;
                           });
-
-                          final currentCandle = _currentCandle(maxWidth);
-
-                          if (currentCandle != null) {
-                            widget.onCandleSelected?.call(currentCandle);
-                          }
                         },
                       ),
                     ],

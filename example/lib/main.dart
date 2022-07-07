@@ -735,17 +735,11 @@ class _MyAppState extends State<MyApp> {
             child: Candlesticks(
               candles: candles,
               style: CandleSticksStyle.dark(
-                  //primaryBull:
-                  ),
+                primaryBull: Colors.blue,
+              ),
               ordinateAxisPadding: EdgeInsets.only(bottom: 20, left: 20),
-              abscisaAxisColor: Colors.blue,
-              abscisaItemTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
-              onCandleSelected: (candle) {
-                print(candle);
-              },
-              onEndLongPress: () {
-                print('end');
-              },
+              abscissaAxisColor: Colors.blue,
+              abscissaItemTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
               tooltipBuilder: (candle) => Container(
                 color: Colors.blue,
                 child: Text('qw'),

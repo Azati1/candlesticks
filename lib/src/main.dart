@@ -30,13 +30,9 @@ class Candlesticks extends StatefulWidget {
 
   final EdgeInsets? ordinateAxisPadding;
 
-  final TextStyle? abscisaItemTextStyle;
+  final TextStyle? abscissaItemTextStyle;
 
-  final Color? abscisaAxisColor;
-
-  final Function(Candle)? onCandleSelected;
-
-  final VoidCallback? onEndLongPress;
+  final Color? abscissaAxisColor;
 
   final Widget Function(Candle)? tooltipBuilder;
 
@@ -48,10 +44,8 @@ class Candlesticks extends StatefulWidget {
     this.style,
     this.ordinateItemTextStyle,
     this.ordinateAxisPadding,
-    this.abscisaItemTextStyle,
-    this.abscisaAxisColor,
-    this.onCandleSelected,
-    this.onEndLongPress,
+    this.abscissaItemTextStyle,
+    this.abscissaAxisColor,
     this.tooltipBuilder,
   })  : assert(candles.length == 0 || candles.length > 1, "Please provide at least 2 candles"),
         super(key: key);
@@ -133,10 +127,8 @@ class _CandlesticksState extends State<Candlesticks> {
                   index: index,
                   ordinateItemTextStyle: widget.ordinateItemTextStyle,
                   ordinateAxisPadding: widget.ordinateAxisPadding,
-                  abscisaItemTextStyle: widget.abscisaItemTextStyle,
-                  abscisaAxisColor: widget.abscisaAxisColor,
-                  onCandleSelected: widget.onCandleSelected,
-                  onEndLongPress: widget.onEndLongPress,
+                  abscissaItemTextStyle: widget.abscissaItemTextStyle,
+                  abscissaAxisColor: widget.abscissaAxisColor,
                   tooltipBuilder: widget.tooltipBuilder,
                 );
               },
