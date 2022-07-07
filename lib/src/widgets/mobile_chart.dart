@@ -48,7 +48,7 @@ class MobileChart extends StatefulWidget {
 
   final VoidCallback? onEndLongPress;
 
-  final Widget? tooltip;
+  final Widget Function(Candle)? tooltipBuilder;
 
   MobileChart({
     required this.style,
@@ -65,7 +65,7 @@ class MobileChart extends StatefulWidget {
     this.abscisaAxisColor,
     this.onCandleSelected,
     this.onEndLongPress,
-    this.tooltip,
+    this.tooltipBuilder,
   });
 
   @override
@@ -119,11 +119,7 @@ class _MobileChartState extends State<MobileChart> {
               tween: Tween(begin: candlesLowPrice, end: candlesLowPrice),
               duration: Duration(milliseconds: 0),
               builder: (context, double low, _) {
-                final currentCandle = longPressX == null
-                    ? null
-                    : widget.candles[min(
-                        max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
-                        widget.candles.length - 1)];
+                final currentCandle = _currentCandle(maxWidth);
 
                 if (longPressX != null) {
                   _tooltipSide = longPressX! > maxWidth / 2 ? TooltipSide.right : TooltipSide.left;
@@ -202,14 +198,7 @@ class _MobileChartState extends State<MobileChart> {
                               longPressY = details.localPosition.dy;
                             });
 
-                            final currentCandle = longPressX == null
-                                ? null
-                                : widget.candles[min(
-                                    max(
-                                        (maxWidth - longPressX!) ~/ widget.candleWidth +
-                                            widget.index,
-                                        0),
-                                    widget.candles.length - 1)];
+                            final currentCandle = _currentCandle(maxWidth);
 
                             if (currentCandle != null) {
                               widget.onCandleSelected?.call(currentCandle);
@@ -222,14 +211,7 @@ class _MobileChartState extends State<MobileChart> {
                               longPressY = details.localPosition.dy;
                             });
 
-                            final currentCandle = longPressX == null
-                                ? null
-                                : widget.candles[min(
-                                    max(
-                                        (maxWidth - longPressX!) ~/ widget.candleWidth +
-                                            widget.index,
-                                        0),
-                                    widget.candles.length - 1)];
+                            final currentCandle = _currentCandle(maxWidth);
 
                             if (currentCandle != null) {
                               widget.onCandleSelected?.call(currentCandle);
@@ -237,12 +219,14 @@ class _MobileChartState extends State<MobileChart> {
                           },
                         ),
                       ),
-                      if (widget.tooltip != null && longPressX != null)
+                      if (widget.tooltipBuilder != null && longPressX != null)
                         Align(
                           alignment: TooltipSide.right == _tooltipSide
                               ? Alignment.topLeft
                               : Alignment.topRight,
-                          child: widget.tooltip,
+                          child: widget.tooltipBuilder!.call(
+                            _currentCandle(maxWidth)!,
+                          ),
                         ),
                     ],
                   ),
@@ -253,5 +237,12 @@ class _MobileChartState extends State<MobileChart> {
         );
       },
     );
+  }
+
+  Candle? _currentCandle(double maxWidth) {
+    return longPressX == null
+        ? null
+        : widget.candles[min(max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
+            widget.candles.length - 1)];
   }
 }

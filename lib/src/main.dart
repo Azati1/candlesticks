@@ -38,7 +38,7 @@ class Candlesticks extends StatefulWidget {
 
   final VoidCallback? onEndLongPress;
 
-  final Widget? tooltip;
+  final Widget Function(Candle)? tooltipBuilder;
 
   const Candlesticks({
     Key? key,
@@ -52,7 +52,7 @@ class Candlesticks extends StatefulWidget {
     this.abscisaAxisColor,
     this.onCandleSelected,
     this.onEndLongPress,
-    this.tooltip,
+    this.tooltipBuilder,
   })  : assert(candles.length == 0 || candles.length > 1, "Please provide at least 2 candles"),
         super(key: key);
 
@@ -137,7 +137,7 @@ class _CandlesticksState extends State<Candlesticks> {
                   abscisaAxisColor: widget.abscisaAxisColor,
                   onCandleSelected: widget.onCandleSelected,
                   onEndLongPress: widget.onEndLongPress,
-                  tooltip: widget.tooltip,
+                  tooltipBuilder: widget.tooltipBuilder,
                 );
               },
             ),
