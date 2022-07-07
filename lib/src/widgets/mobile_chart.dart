@@ -122,7 +122,7 @@ class _MobileChartState extends State<MobileChart> {
                 final currentCandle = _currentCandle(maxWidth);
 
                 if (longPressX != null) {
-                  _tooltipSide = longPressX! > maxWidth / 2 ? TooltipSide.right : TooltipSide.left;
+                  _tooltipSide = longPressX! < maxWidth / 2 ? TooltipSide.right : TooltipSide.left;
                 }
 
                 return Container(
@@ -183,9 +183,10 @@ class _MobileChartState extends State<MobileChart> {
                             )
                           : Container(),
                       if (widget.tooltipBuilder != null && longPressX != null)
-                        Positioned(
-                          right: TooltipSide.right == _tooltipSide ? 0 : null,
-                          left: TooltipSide.left == _tooltipSide ? 0 : null,
+                        Align(
+                          alignment: _tooltipSide == TooltipSide.right
+                              ? Alignment.topRight
+                              : Alignment.topLeft,
                           child: IgnorePointer(
                             child: widget.tooltipBuilder!.call(
                               _currentCandle(maxWidth)!,
