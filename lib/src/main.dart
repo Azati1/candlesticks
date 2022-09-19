@@ -84,6 +84,9 @@ class _CandlesticksState extends State<Candlesticks> {
     if (widget.candles.length == 0) {
       return;
     }
+    if (widget.candles == oldWidget.candles) {
+      return;
+    }
     mainWidnowDataContainer = MainWidnowDataContainer(widget.candles);
   }
 

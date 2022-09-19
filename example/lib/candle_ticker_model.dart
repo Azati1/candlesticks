@@ -8,7 +8,7 @@ class CandleTickerModel {
   const CandleTickerModel(
       {required this.eventTime, required this.symbol, required this.candle});
 
-  factory CandleTickerModel.fromJson(Map<String, dynamic> json) {
+  /*factory CandleTickerModel.fromJson(Map<String, dynamic> json) {
     return CandleTickerModel(
         eventTime: json['E'] as int,
         symbol: json['s'] as String,
@@ -19,5 +19,5 @@ class CandleTickerModel {
             open: double.parse(json["k"]["o"]),
             close: double.parse(json["k"]["c"]),
             volume: double.parse(json["k"]["v"])));
-  }
+  }*/
 }
