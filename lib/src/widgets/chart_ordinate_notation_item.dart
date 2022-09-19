@@ -13,7 +13,7 @@ class GraphicOrdinateNotationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      value.toInt().toString(),
+      value.toStringAsFixed(5).toString(),
       style: textStyle ?? TextStyle(
         color: Colors.black,
         fontSize: 11,
