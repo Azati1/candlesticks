@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:candlesticks/src/models/candle.dart';
 import 'package:candlesticks/src/models/candle_sticks_style.dart';
 import 'package:candlesticks/src/widgets/abscissa_notation_item.dart';
@@ -68,7 +70,7 @@ class _TimeRowState extends State<TimeRow> {
           ),
           Expanded(
             child: Stack(
-              children: List.generate(widget.candles.sublist(0, candlesOnScreen).length, (index) {
+              children: List.generate(widget.candles.sublist(0, min(widget.candles.length, _maxCandlesOnScreen)).length, (index) {
                 if (visibleIndexes.contains(index)) {
                   return Positioned(
                     right: index * widget.candleWidth,
@@ -105,6 +107,7 @@ class _TimeRowState extends State<TimeRow> {
   }
 
   List<int> _visibleIndexes() {
+    final candlesOnScreen = min(widget.candles.length, _maxCandlesOnScreen);
     final months = widget.candles.sublist(0, candlesOnScreen).map((e) => e.date.month).toList();
 
     final indexes = <int>[];
@@ -121,7 +124,7 @@ class _TimeRowState extends State<TimeRow> {
     return indexes;
   }
 
-  int get candlesOnScreen {
+  int get _maxCandlesOnScreen {
     return MediaQuery.of(context).size.width ~/ widget.candleWidth;
   }
 }
