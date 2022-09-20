@@ -115,13 +115,12 @@ class _TimeRowState extends State<TimeRow> {
                                           color: widget.style.primaryTextColor,
                                           fontSize: 12,
                                         ),
-                                  ).width /
-                                  2
+                                  ).width
                               : 0),
                       left: MediaQuery.of(context).size.width -
                           index * widget.candleWidth -
                           widget.candleWidth -
-                          widget.candleWidth / 2 -
+                          widget.candleWidth / 2 +
                           (primaryIndexes.contains(index)
                               ? TextSize.evaluate(
                                     text: widget.dateBuilder(
@@ -131,8 +130,7 @@ class _TimeRowState extends State<TimeRow> {
                                           color: widget.style.primaryTextColor,
                                           fontSize: 12,
                                         ),
-                                  ).width /
-                                  2
+                                  ).width
                               : 0),
                       child: AbscissaNotationItem(
                         title: primaryIndexes.contains(index)

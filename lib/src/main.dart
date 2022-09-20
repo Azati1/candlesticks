@@ -147,5 +147,5 @@ class _CandlesticksState extends State<Candlesticks> {
     );
   }
 
-  double get _candleWidth => MediaQuery.of(context).size.width / (widget.candles.length + 1);
+  double get _candleWidth => MediaQuery.of(context).size.width / widget.candles.length + 1;
 }
