@@ -75,6 +75,36 @@ class _MyAppState extends State<MyApp> {
       change: 0,
       amplitude: 0,
     ),
+    Candle(
+      open: 27.01,
+      close: 7.05,
+      high: 27.07,
+      low: 27.01,
+      date: DateTime(2020).add(Duration(minutes: -90)),
+      volume: 0,
+      change: 0,
+      amplitude: 0,
+    ),
+    Candle(
+      open: 27.01,
+      close: 7.05,
+      high: 27.07,
+      low: 27.01,
+      date: DateTime(2020).add(Duration(minutes: -105)),
+      volume: 0,
+      change: 0,
+      amplitude: 0,
+    ),
+    Candle(
+      open: 27.01,
+      close: 7.05,
+      high: 27.07,
+      low: 27.01,
+      date: DateTime(2020).add(Duration(minutes: -120)),
+      volume: 0,
+      change: 0,
+      amplitude: 0,
+    ),
   ];
 
   @override
@@ -100,10 +130,10 @@ class _MyAppState extends State<MyApp> {
                 child: Text('qw'),
               ),
               isPrimary: (date) {
-                return date.hour == 0;
+                return date.minute == 0;
               },
               dateBuilder: (date) {
-                return DateFormat('dd').format(date);
+                return 'text';
               },
             ),
           ),

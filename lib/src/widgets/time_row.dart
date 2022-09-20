@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:candlesticks/src/models/candle.dart';
 import 'package:candlesticks/src/models/candle_sticks_style.dart';
+import 'package:candlesticks/src/utils/text_size.dart';
 import 'package:candlesticks/src/widgets/abscissa_notation_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -103,11 +104,36 @@ class _TimeRowState extends State<TimeRow> {
                       .length,
                   (index) {
                     return Positioned(
-                      right:
-                          index * widget.candleWidth + widget.candleWidth / 2,
+                      right: index * widget.candleWidth +
+                          widget.candleWidth / 2 -
+                          (primaryIndexes.contains(index)
+                              ? TextSize.evaluate(
+                                    text: widget.dateBuilder(
+                                        widget.candles[index].date),
+                                    style: widget.itemTextStyle ??
+                                        TextStyle(
+                                          color: widget.style.primaryTextColor,
+                                          fontSize: 12,
+                                        ),
+                                  ).width /
+                                  2
+                              : 0),
                       left: MediaQuery.of(context).size.width -
                           index * widget.candleWidth -
-                          widget.candleWidth - widget.candleWidth / 2,
+                          widget.candleWidth -
+                          widget.candleWidth / 2 -
+                          (primaryIndexes.contains(index)
+                              ? TextSize.evaluate(
+                                    text: widget.dateBuilder(
+                                        widget.candles[index].date),
+                                    style: widget.itemTextStyle ??
+                                        TextStyle(
+                                          color: widget.style.primaryTextColor,
+                                          fontSize: 12,
+                                        ),
+                                  ).width /
+                                  2
+                              : 0),
                       child: AbscissaNotationItem(
                         title: primaryIndexes.contains(index)
                             ? widget.dateBuilder(widget.candles[index].date)
