@@ -4,6 +4,7 @@ import 'package:candlesticks/src/models/candle.dart';
 import 'package:candlesticks/src/models/candle_sticks_style.dart';
 import 'package:candlesticks/src/widgets/abscissa_notation_item.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TimeRow extends StatefulWidget {
   final List<Candle> candles;
@@ -13,6 +14,8 @@ class TimeRow extends StatefulWidget {
   final CandleSticksStyle style;
   final TextStyle? itemTextStyle;
   final Color? axisColor;
+  final bool Function(DateTime) isPrimary;
+  final String Function(DateTime) dateBuilder;
 
   const TimeRow({
     Key? key,
@@ -23,6 +26,8 @@ class TimeRow extends StatefulWidget {
     required this.style,
     this.itemTextStyle,
     this.axisColor,
+    required this.isPrimary,
+    required this.dateBuilder,
   }) : super(key: key);
 
   @override
@@ -46,7 +51,8 @@ class _TimeRowState extends State<TimeRow> {
 
   @override
   void didUpdateWidget(TimeRow oldWidget) {
-    if (oldWidget.index != widget.index || oldWidget.candleWidth != widget.candleWidth)
+    if (oldWidget.index != widget.index ||
+        oldWidget.candleWidth != widget.candleWidth)
       _scrollController.jumpTo((widget.index + 10) * widget.candleWidth);
     super.didUpdateWidget(oldWidget);
   }
@@ -54,8 +60,9 @@ class _TimeRowState extends State<TimeRow> {
   @override
   Widget build(BuildContext context) {
     int step = _stepCalculator();
-    final dif = widget.candles[0].date.difference(widget.candles[1].date) * step;
-    final visibleIndexes = _visibleIndexes();
+    final dif =
+        widget.candles[0].date.difference(widget.candles[1].date) * step;
+    final primaryIndexes = _primaryIndexes();
     return SizedBox(
       height: 29.5,
       child: Column(
@@ -64,41 +71,52 @@ class _TimeRowState extends State<TimeRow> {
           Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: widget.axisColor ?? Colors.transparent, width: 1.5),
+                bottom: BorderSide(
+                    color: widget.axisColor ?? Colors.transparent, width: 1.5),
               ),
             ),
           ),
           Expanded(
             child: Stack(
-              children: List.generate(widget.candles.sublist(0, min(widget.candles.length, _maxCandlesOnScreen)).length, (index) {
-                if (visibleIndexes.contains(index)) {
-                  return Positioned(
-                    right: index * widget.candleWidth,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 0.05,
-                          color: widget.style.borderColor,
-                        ),
-                        AbscissaNotationItem(
-                          difference: dif,
-                          time: widget.candles[index].date,
-                          textColor: widget.style.primaryTextColor,
-                          axisColor: widget.axisColor,
-                          itemTextStyle: widget.itemTextStyle,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return Positioned(
-                  right: index * widget.candleWidth,
-                  child: SizedBox(
-                    width: widget.candleWidth,
-                  ),
-                );
-              }).reversed.toList(),
+              children: [
+                ...List.generate(
+                  widget.candles
+                      .sublist(
+                          0, min(widget.candles.length, _maxCandlesOnScreen))
+                      .length,
+                  (index) {
+                    return Positioned(
+                      right:
+                          index * widget.candleWidth + widget.candleWidth / 2,
+                      child: Container(
+                        height: 8,
+                        width: 2,
+                        color: widget.axisColor,
+                      ),
+                    );
+                  },
+                ).reversed.toList(),
+                ...List.generate(
+                  widget.candles
+                      .sublist(
+                          0, min(widget.candles.length, _maxCandlesOnScreen))
+                      .length,
+                  (index) {
+                    return Positioned(
+                      right:
+                          index * widget.candleWidth + widget.candleWidth / 2,
+                      child: AbscissaNotationItem(
+                        title: primaryIndexes.contains(index)
+                            ? widget.candles[index].date.toIso8601String()
+                            : '',
+                        textColor: widget.style.primaryTextColor,
+                        axisColor: widget.axisColor,
+                        itemTextStyle: widget.itemTextStyle,
+                      ),
+                    );
+                  },
+                ).reversed.toList(),
+              ],
             ),
           ),
         ],
@@ -106,19 +124,25 @@ class _TimeRowState extends State<TimeRow> {
     );
   }
 
-  List<int> _visibleIndexes() {
+  List<int> _primaryIndexes() {
     final candlesOnScreen = min(widget.candles.length, _maxCandlesOnScreen);
-    final months = widget.candles.sublist(0, candlesOnScreen).map((e) => e.date.month).toList();
+    final months = widget.candles
+        .sublist(0, candlesOnScreen)
+        .map((e) => e.date.hour)
+        .toList();
 
     final indexes = <int>[];
 
     for (int i = 0; i < months.length; i++) {
-      final month = months[i];
-      if (i < 2) continue;
+      final date = widget.candles[i].date;
+      if (widget.isPrimary(date)) {
+        indexes.add(i);
+      }
+      /*if (i < 2) continue;
       final previousMonth = months[i - 1];
       if (previousMonth != month) {
         indexes.add(i - 2);
-      }
+      }*/
     }
 
     return indexes;

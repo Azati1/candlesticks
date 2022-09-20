@@ -46,6 +46,9 @@ class MobileChart extends StatefulWidget {
 
   final Widget Function(Candle)? tooltipBuilder;
 
+  final bool Function(DateTime) isPrimary;
+  final String Function(DateTime) dateBuilder;
+
   MobileChart({
     required this.style,
     required this.candleWidth,
@@ -60,6 +63,8 @@ class MobileChart extends StatefulWidget {
     this.abscissaItemTextStyle,
     this.abscissaAxisColor,
     this.tooltipBuilder,
+    required this.isPrimary,
+    required this.dateBuilder,
   });
 
   @override
@@ -81,8 +86,9 @@ class _MobileChartState extends State<MobileChart> {
 
         // visible candles start and end indexes
         final int candlesStartIndex = max(widget.index, 0);
-        final int candlesEndIndex =
-            min(maxWidth ~/ widget.candleWidth + widget.index, widget.candles.length - 1);
+        final int candlesEndIndex = min(
+            maxWidth ~/ widget.candleWidth + widget.index,
+            widget.candles.length - 1);
 
         double candlesHighPrice = 0;
         double candlesLowPrice = 0;
@@ -116,7 +122,9 @@ class _MobileChartState extends State<MobileChart> {
                 final currentCandle = _currentCandle(maxWidth);
 
                 if (longPressX != null) {
-                  _tooltipSide = longPressX! < maxWidth / 2 ? TooltipSide.right : TooltipSide.left;
+                  _tooltipSide = longPressX! < maxWidth / 2
+                      ? TooltipSide.right
+                      : TooltipSide.left;
                 }
 
                 return Container(
@@ -131,7 +139,8 @@ class _MobileChartState extends State<MobileChart> {
                                 Positioned(
                                   left: widget.ordinateAxisPadding?.left ?? 0,
                                   top: widget.ordinateAxisPadding?.top ?? 0,
-                                  bottom: widget.ordinateAxisPadding?.bottom ?? 0,
+                                  bottom:
+                                      widget.ordinateAxisPadding?.bottom ?? 0,
                                   child: PriceColumn(
                                     ordinateMin: candlesLowPrice,
                                     ordinateMax: candlesHighPrice,
@@ -139,7 +148,8 @@ class _MobileChartState extends State<MobileChart> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 30),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 30),
                                   child: RepaintBoundary(
                                     child: CandleStickWidget(
                                       candles: widget.candles,
@@ -163,6 +173,8 @@ class _MobileChartState extends State<MobileChart> {
                             index: widget.index,
                             itemTextStyle: widget.abscissaItemTextStyle,
                             axisColor: widget.abscissaAxisColor,
+                            isPrimary: widget.isPrimary,
+                            dateBuilder: widget.dateBuilder,
                           ),
                         ],
                       ),
@@ -201,7 +213,8 @@ class _MobileChartState extends State<MobileChart> {
                           });
                         },
                         behavior: HitTestBehavior.translucent,
-                        onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
+                        onLongPressMoveUpdate:
+                            (LongPressMoveUpdateDetails details) {
                           setState(() {
                             longPressX = details.localPosition.dx;
                             longPressY = details.localPosition.dy;
@@ -222,7 +235,9 @@ class _MobileChartState extends State<MobileChart> {
   Candle? _currentCandle(double maxWidth) {
     return longPressX == null
         ? null
-        : widget.candles[min(max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index, 0),
+        : widget.candles[min(
+            max((maxWidth - longPressX!) ~/ widget.candleWidth + widget.index,
+                0),
             widget.candles.length - 1)];
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:candlesticks/candlesticks.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,54 +15,66 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<Candle> candles = [
-    /*Candle(
-      date: DateTime.now(),
+    Candle(
+      date: DateTime(2020),
       high: 6.2,
       low: 6.14,
       open: 6.16,
       close: 6.19,
       volume: 0,
+      change: 0,
+      amplitude: 0,
     ),
     Candle(
       open: 7.01,
       close: 7.05,
       high: 7.07,
       low: 7.01,
-      date: DateTime.now().add(Duration(hours: -1)),
+      date: DateTime(2020).add(Duration(minutes: -15)),
       volume: 0,
+      change: 0,
+      amplitude: 0,
     ),
     Candle(
-      date: DateTime.now().add(Duration(hours: -2)),
+      date: DateTime(2020).add(Duration(minutes: -30)),
       high: 7.03,
       low: 6.9,
       open: 6.9,
       close: 7.01,
       volume: 0,
+      change: 0,
+      amplitude: 0,
     ),
     Candle(
       open: 7.01,
       close: 7.05,
       high: 7.07,
       low: 7.01,
-      date: DateTime.now().add(Duration(hours: -3)),
+      date: DateTime(2020).add(Duration(minutes: -45)),
       volume: 0,
+      change: 0,
+      amplitude: 0,
     ),
     Candle(
       open: 17.01,
       close: 7.05,
       high: 17.07,
       low: 17.01,
-      date: DateTime.now().add(Duration(hours: -4)),
+      date: DateTime(2020).add(Duration(minutes: -60)),
       volume: 0,
+      change: 0,
+      amplitude: 0,
     ),
     Candle(
       open: 27.01,
       close: 7.05,
       high: 27.07,
       low: 27.01,
-      date: DateTime.now().add(Duration(hours: -5)),
+      date: DateTime(2020).add(Duration(minutes: -75)),
       volume: 0,
-    ),*/
+      change: 0,
+      amplitude: 0,
+    ),
   ];
 
   @override
@@ -86,6 +99,12 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.blue,
                 child: Text('qw'),
               ),
+              isPrimary: (date) {
+                return date.hour == 0;
+              },
+              dateBuilder: (date) {
+                return DateFormat('dd').format(date);
+              },
             ),
           ),
         ),

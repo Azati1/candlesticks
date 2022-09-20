@@ -17,6 +17,7 @@ dependencies:
       "../"
   http: ^0.13.3
   web_socket_channel: ^2.1.0
+  intl:
 
 
   cupertino_icons: ^1.0.2

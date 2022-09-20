@@ -4,15 +4,13 @@ import 'package:intl/intl.dart';
 class AbscissaNotationItem extends StatelessWidget {
   const AbscissaNotationItem({
     Key? key,
-    required this.difference,
-    required this.time,
     required this.textColor,
+    required this.title,
     this.axisColor,
     this.itemTextStyle,
   }) : super(key: key);
 
-  final Duration difference;
-  final DateTime time;
+  final String title;
   final Color textColor;
   final Color? axisColor;
   final TextStyle? itemTextStyle;
@@ -22,17 +20,16 @@ class AbscissaNotationItem extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(height: 8, width: 2, color: axisColor),
-        const SizedBox(height: 5),
-        _monthText(time, textColor),
+        const SizedBox(height: 13),
+        _monthText(title, textColor),
       ],
     );
   }
 
   /// Day/month text widget
-  Text _monthText(DateTime _time, Color color) {
+  Text _monthText(String title, Color color) {
     return Text(
-      DateFormat('MMMM').format(_time),
+      title,
       style: itemTextStyle ??
           TextStyle(
             color: color,

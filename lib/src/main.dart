@@ -36,6 +36,10 @@ class Candlesticks extends StatefulWidget {
 
   final Widget Function(Candle)? tooltipBuilder;
 
+  final bool Function(DateTime) isPrimary;
+
+  final String Function(DateTime) dateBuilder;
+
   const Candlesticks({
     Key? key,
     required this.candles,
@@ -47,7 +51,10 @@ class Candlesticks extends StatefulWidget {
     this.abscissaItemTextStyle,
     this.abscissaAxisColor,
     this.tooltipBuilder,
-  })  : assert(candles.length == 0 || candles.length > 1, "Please provide at least 2 candles"),
+    required this.isPrimary,
+    required this.dateBuilder,
+  })  : assert(candles.length == 0 || candles.length > 1,
+            "Please provide at least 2 candles"),
         super(key: key);
 
   @override
@@ -101,7 +108,8 @@ class _CandlesticksState extends State<Candlesticks> {
         if (widget.candles.length == 0 || mainWidnowDataContainer == null)
           Expanded(
             child: Center(
-              child: widget.loadingWidget ?? CircularProgressIndicator(color: style.loadingColor),
+              child: widget.loadingWidget ??
+                  CircularProgressIndicator(color: style.loadingColor),
             ),
           )
         else
@@ -129,6 +137,8 @@ class _CandlesticksState extends State<Candlesticks> {
                   abscissaItemTextStyle: widget.abscissaItemTextStyle,
                   abscissaAxisColor: widget.abscissaAxisColor,
                   tooltipBuilder: widget.tooltipBuilder,
+                  isPrimary: widget.isPrimary,
+                  dateBuilder: widget.dateBuilder,
                 );
               },
             ),
