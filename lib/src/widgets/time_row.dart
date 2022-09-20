@@ -105,6 +105,9 @@ class _TimeRowState extends State<TimeRow> {
                     return Positioned(
                       right:
                           index * widget.candleWidth + widget.candleWidth / 2,
+                      left: MediaQuery.of(context).size.width -
+                          index * widget.candleWidth -
+                          widget.candleWidth - widget.candleWidth / 2,
                       child: AbscissaNotationItem(
                         title: primaryIndexes.contains(index)
                             ? widget.dateBuilder(widget.candles[index].date)

@@ -30,6 +30,7 @@ class AbscissaNotationItem extends StatelessWidget {
   Text _monthText(String title, Color color) {
     return Text(
       title,
+      maxLines: 1,
       style: itemTextStyle ??
           TextStyle(
             color: color,
