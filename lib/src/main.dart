@@ -68,10 +68,6 @@ class _CandlesticksState extends State<Candlesticks> {
   double lastX = 0;
   int lastIndex = -10;
 
-  /// candleWidth controls the width of the single candles.
-  ///  range: [2...10]
-  double candleWidth = 6;
-
   MainWidnowDataContainer? mainWidnowDataContainer;
 
   @override
@@ -115,7 +111,7 @@ class _CandlesticksState extends State<Candlesticks> {
         else
           Expanded(
             child: TweenAnimationBuilder(
-              tween: Tween(begin: 6.toDouble(), end: candleWidth),
+              tween: Tween(begin: 6.toDouble(), end: _candleWidth),
               duration: Duration(milliseconds: 120),
               builder: (_, double width, __) {
                 return MobileChart(
@@ -146,4 +142,7 @@ class _CandlesticksState extends State<Candlesticks> {
       ],
     );
   }
+
+  double get _candleWidth =>
+      MediaQuery.of(context).size.width / widget.candles.length;
 }

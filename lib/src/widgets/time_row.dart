@@ -52,9 +52,9 @@ class _TimeRowState extends State<TimeRow> {
 
   @override
   void didUpdateWidget(TimeRow oldWidget) {
-    if (oldWidget.index != widget.index ||
+    /*if (oldWidget.index != widget.index ||
         oldWidget.candleWidth != widget.candleWidth)
-      _scrollController.jumpTo((widget.index + 10) * widget.candleWidth);
+      _scrollController.jumpTo((widget.index + 10) * widget.candleWidth);*/
     super.didUpdateWidget(oldWidget);
   }
 
