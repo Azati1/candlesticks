@@ -105,6 +105,16 @@ class _MyAppState extends State<MyApp> {
       change: 0,
       amplitude: 0,
     ),
+    Candle(
+      open: 27.01,
+      close: 7.05,
+      high: 27.07,
+      low: 27.01,
+      date: DateTime(2020).add(Duration(minutes: -135)),
+      volume: 0,
+      change: 0,
+      amplitude: 0,
+    ),
   ];
 
   @override
