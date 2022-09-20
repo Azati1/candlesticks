@@ -105,21 +105,6 @@ class _TimeRowState extends State<TimeRow> {
                   (index) {
                     return Positioned(
                       right: index * widget.candleWidth +
-                          widget.candleWidth / 2 -
-                          (primaryIndexes.contains(index)
-                              ? TextSize.evaluate(
-                                    text: widget.dateBuilder(
-                                        widget.candles[index].date),
-                                    style: widget.itemTextStyle ??
-                                        TextStyle(
-                                          color: widget.style.primaryTextColor,
-                                          fontSize: 12,
-                                        ),
-                                  ).width
-                              : 0),
-                      left: MediaQuery.of(context).size.width -
-                          index * widget.candleWidth -
-                          widget.candleWidth -
                           widget.candleWidth / 2 +
                           (primaryIndexes.contains(index)
                               ? TextSize.evaluate(
@@ -130,7 +115,24 @@ class _TimeRowState extends State<TimeRow> {
                                           color: widget.style.primaryTextColor,
                                           fontSize: 12,
                                         ),
-                                  ).width
+                                  ).width /
+                                  2
+                              : 0),
+                      left: MediaQuery.of(context).size.width -
+                          index * widget.candleWidth -
+                          widget.candleWidth -
+                          widget.candleWidth / 2 -
+                          (primaryIndexes.contains(index)
+                              ? TextSize.evaluate(
+                                    text: widget.dateBuilder(
+                                        widget.candles[index].date),
+                                    style: widget.itemTextStyle ??
+                                        TextStyle(
+                                          color: widget.style.primaryTextColor,
+                                          fontSize: 12,
+                                        ),
+                                  ).width /
+                                  2
                               : 0),
                       child: AbscissaNotationItem(
                         title: primaryIndexes.contains(index)
