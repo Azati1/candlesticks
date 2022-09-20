@@ -107,7 +107,7 @@ class _TimeRowState extends State<TimeRow> {
                           index * widget.candleWidth + widget.candleWidth / 2,
                       child: AbscissaNotationItem(
                         title: primaryIndexes.contains(index)
-                            ? widget.candles[index].date.toIso8601String()
+                            ? widget.dateBuilder(widget.candles[index].date)
                             : '',
                         textColor: widget.style.primaryTextColor,
                         axisColor: widget.axisColor,
