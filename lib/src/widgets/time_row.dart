@@ -15,7 +15,7 @@ class TimeRow extends StatefulWidget {
   final CandleSticksStyle style;
   final TextStyle? itemTextStyle;
   final Color? axisColor;
-  final bool Function(DateTime) isPrimary;
+  final bool Function(DateTime?, DateTime, DateTime?) isPrimary;
   final String Function(DateTime) dateBuilder;
 
   const TimeRow({
@@ -163,8 +163,10 @@ class _TimeRowState extends State<TimeRow> {
     final indexes = <int>[];
 
     for (int i = 0; i < months.length; i++) {
+      final prevDate = i > 0 ? widget.candles[i - 1].date : null;
       final date = widget.candles[i].date;
-      if (widget.isPrimary(date)) {
+      final nextDate = i < months.length -1 ? widget.candles[i + 1].date : null;
+      if (widget.isPrimary(prevDate, date, nextDate)) {
         indexes.add(i);
       }
       /*if (i < 2) continue;

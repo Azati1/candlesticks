@@ -46,7 +46,7 @@ class MobileChart extends StatefulWidget {
 
   final Widget Function(Candle)? tooltipBuilder;
 
-  final bool Function(DateTime) isPrimary;
+  final bool Function(DateTime?, DateTime, DateTime?) isPrimary;
   final String Function(DateTime) dateBuilder;
 
   MobileChart({

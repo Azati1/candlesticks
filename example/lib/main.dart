@@ -129,7 +129,7 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.blue,
                 child: Text('qw'),
               ),
-              isPrimary: (date) {
+              isPrimary: (prev, date, next) {
                 return date.minute == 0;
               },
               dateBuilder: (date) {
