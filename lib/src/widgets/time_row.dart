@@ -89,7 +89,7 @@ class _TimeRowState extends State<TimeRow> {
                       right:
                           index * widget.candleWidth + widget.candleWidth / 2,
                       child: Container(
-                        height: 8,
+                        height: primaryIndexes.contains(index) ? 8 : 4,
                         width: 2,
                         color: widget.axisColor,
                       ),
