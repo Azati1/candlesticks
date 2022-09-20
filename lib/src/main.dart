@@ -115,7 +115,7 @@ class _CandlesticksState extends State<Candlesticks> {
         else
           Expanded(
             child: TweenAnimationBuilder(
-              tween: Tween(begin: _candleWidth.toDouble(), end: _candleWidth),
+              tween: Tween(begin: 6.toDouble(), end: candleWidth),
               duration: Duration(milliseconds: 120),
               builder: (_, double width, __) {
                 return MobileChart(
@@ -146,6 +146,4 @@ class _CandlesticksState extends State<Candlesticks> {
       ],
     );
   }
-
-  double get _candleWidth => MediaQuery.of(context).size.width / (widget.candles.length + 1);
 }
